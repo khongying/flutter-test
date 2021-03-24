@@ -4,16 +4,6 @@ import 'package:http/http.dart' as Http;
 import 'member.type.dart';
 import 'memberDetail/memberDetail.dart';
 
-class MySecondPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Member List',
-      home: Member(),
-    );
-  }
-}
-
 class Member extends StatefulWidget {
   @override
   _MemberState createState() => _MemberState();

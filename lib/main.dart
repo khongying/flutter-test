@@ -88,52 +88,34 @@ class _TestAppState extends State<TestApp> {
     todoList.forEach((x) {
       if (x.completed) {
         // true
-        data.add(
-            Container(
-                child: Column(
-                  children: <Widget>[
-                    Card(
-                        child: ListTile(
-                          leading: Icon(Icons.check, size: 40, color: Colors.green),
-                          title: Text(x.title.toString()),
-                        )),
-                  ],
-                ))
-        );
+        data.add(Container(
+            child: Column(
+          children: <Widget>[
+            Card(
+                child: ListTile(
+              leading: Icon(Icons.check, size: 40, color: Colors.green),
+              title: Text(x.title.toString()),
+            )),
+          ],
+        )));
       } else {
         // false
-        data.add(
-          Container(
-              child: Column(
-                children: <Widget>[
-                  Card(
-                      child: ListTile(
-                        leading: Icon(Icons.close, size: 40,color: Colors.red),
-                        title: Text(x.title.toString()),
-                      )),
-                ],
-              ))
-        );
+        data.add(Container(
+            child: Column(
+          children: <Widget>[
+            Card(
+                child: ListTile(
+              leading: Icon(Icons.close, size: 40, color: Colors.red),
+              title: Text(x.title.toString()),
+            )),
+          ],
+        )));
       }
     });
     return data;
   }
 
   submit() {
-    navigateToSecondPage(context);
-    // return showDialog(
-    //     context: context,
-    //     builder: (context) {
-    //       return AlertDialog(
-    //         content: Text('${email.text} - ${password.text}'),
-    //       );
-    //     });
-  }
-
-  navigateToSecondPage(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) {
-      return MySecondPage();
-    }));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Member()));
   }
 }
