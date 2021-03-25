@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/todo.type.dart';
-import 'package:http/http.dart' as Http;
-
+import 'package:flutter_app/todo/todoList.dart';
 import 'member.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -23,15 +23,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: TestApp(),
@@ -45,74 +36,45 @@ class TestApp extends StatefulWidget {
 }
 
 class _TestAppState extends State<TestApp> {
-  List<TodoType> todoList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    toDoList();
-  }
-
-  Future<void> toDoList() async {
-    var url = Uri.parse('https://jsonplaceholder.typicode.com/todos');
-    var response = await Http.get(url);
-    setState(() {
-      todoList = todoTypeFromJson(response.body);
-    });
-    print(todoList);
-  }
+  int _selectedIndex = 0;
+  final List<Widget> _children = [
+    TodoList(),
+    Member()
+  ];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-        appBar: AppBar(title: Text('TODO LIST')),
-        body: Container(
-            child: Column(children: [
-          RaisedButton(
-            onPressed: () {
-              submit();
-            },
-            child: Text('Member lists'),
-            textColor: Colors.white,
-            color: Colors.blue,
-          ),
-          Expanded(
-              child: ListView(
-            children: getData(),
-          )),
-        ])));
+        // resizeToAvoidBottomPadding: true,
+        body: _children[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+                backgroundColor: Colors.red,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.supervisor_account),
+                label: 'Member',
+                backgroundColor: Colors.green,
+              )
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.amber[800],
+            onTap: _onItemTapped));
   }
 
-  List<Widget> getData() {
-    List<Widget> data = [];
-    todoList.forEach((x) {
-      if (x.completed) {
-        // true
-        data.add(Container(
-            child: Column(
-          children: <Widget>[
-            Card(
-                child: ListTile(
-              leading: Icon(Icons.check, size: 40, color: Colors.green),
-              title: Text(x.title.toString()),
-            )),
-          ],
-        )));
-      } else {
-        // false
-        data.add(Container(
-            child: Column(
-          children: <Widget>[
-            Card(
-                child: ListTile(
-              leading: Icon(Icons.close, size: 40, color: Colors.red),
-              title: Text(x.title.toString()),
-            )),
-          ],
-        )));
-      }
-    });
-    return data;
+  void _onItemTapped(int index) {
+    try{
+      setState(() {
+        print(index);
+        _selectedIndex = index;
+      });
+    }catch(e) {
+      print(e.toString());
+    }
   }
 
   submit() {

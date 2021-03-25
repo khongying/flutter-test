@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/member.type.dart';
-import 'package:flutter_app/memberDetail/memberDetail.type.dart';
 
 class MemberDetail extends StatefulWidget {
   MemberType member;
