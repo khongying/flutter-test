@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/memberDetail/memberDetail.type.dart';
 import 'package:http/http.dart' as Http;
+import 'loading.dart';
 import 'member.type.dart';
 import 'memberDetail/memberDetail.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class Member extends StatefulWidget {
   @override
@@ -11,6 +12,8 @@ class Member extends StatefulWidget {
 
 class _MemberState extends State<Member> {
   List<MemberType> memberList = [];
+  bool isLoading = true;
+
 
   @override
   void initState() {
@@ -23,21 +26,25 @@ class _MemberState extends State<Member> {
     var response = await Http.get(url);
     setState(() {
       memberList = memberTypeFromJson(response.body);
+      isLoading = false;
     });
-    print(memberList);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.red[300],
-          title: Text("Member list"),
-        ),
-        body: Container(
-            child: ListView(
-          children: getMember(),
-        )));
+        backgroundColor: Colors.red[300],
+        title: Text("Member list"),
+    ),
+      body: Stack(
+        children: <Widget>[
+          ListView(
+            children: getMember(),
+          ),
+          isLoading ? LoadingPage() : Stack()
+        ],
+      ),);
   }
 
   List<Widget> getMember() {
@@ -46,24 +53,25 @@ class _MemberState extends State<Member> {
       data.add(
         Container(
             child: Column(
-          children: <Widget>[
-            Card(
-                child: ListTile(
-              leading: Icon(Icons.account_circle, size: 50),
-              title: Text(x.name.toString()),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MemberDetail(
-                      member: x,
-                    ),
-                  ),
-                );
-              },
+              children: <Widget>[
+                Card(
+                    child: ListTile(
+                      leading: Icon(Icons.account_circle, size: 50),
+                      title: Text(x.name.toString()),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                MemberDetail(
+                                  member: x,
+                                ),
+                          ),
+                        );
+                      },
+                    )),
+              ],
             )),
-          ],
-        )),
       );
     });
     return data;

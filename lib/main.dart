@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/todo.type.dart';
 import 'package:flutter_app/todo/todoList.dart';
 import 'member.dart';
 

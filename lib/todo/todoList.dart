@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as Http;
+import '../loading.dart';
 import '../todo.type.dart';
 
 class TodoList extends StatefulWidget {
@@ -12,6 +13,7 @@ class _TodoListState extends State<TodoList> {
 
   List<TodoType> todoList = [];
   int _selectedIndex = 0;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -24,6 +26,7 @@ class _TodoListState extends State<TodoList> {
     var response = await Http.get(url);
     setState(() {
       todoList = todoTypeFromJson(response.body);
+      isLoading = false;
     });
   }
 
@@ -103,7 +106,8 @@ class _TodoListState extends State<TodoList> {
                   ],
                 ),
               ),
-            )
+            ),
+            isLoading ? LoadingPage() : Stack()
           ]),
         ),
       ),
